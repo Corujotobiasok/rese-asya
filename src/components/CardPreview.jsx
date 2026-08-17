@@ -29,13 +29,14 @@ export default function CardPreview({ data, template, cardRef }) {
           <div className="flex justify-center gap-1 mt-3 text-yellow-400 text-xl">★★★★★</div>
         </div>
 
-        <div className="bg-white rounded- p-5 shadow-inner flex justify-center items-center">
-          <QRCodeSVG
-            value={safeLink}
-            size={240}
-            level="H"
-            className="w-[80%] h-auto"
-          />
+        <div className="w-full flex justify-center">
+          <div className="bg-white rounded-xl p-2 shadow-inner flex justify-center items-center w-fit h-fit">
+            <QRCodeSVG
+              value={safeLink}
+              size={300}
+              level="H"
+            />
+          </div>
         </div>
 
         <div className="text-center space-y-2">

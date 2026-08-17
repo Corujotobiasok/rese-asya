@@ -1,18 +1,17 @@
 import { useState, useRef, useMemo } from 'react'
 import GeneratorForm from './components/GeneratorForm'
 import CardPreview from './components/CardPreview'
-import { downloadImage, getQrUrl } from './lib/qr'
+import html2canvas from 'html2canvas'
 
 export default function App() {
-  const [data, setData] = useState({ 
-    name: 'Studio Veco', 
-    link: 'https://g.page/r/Cbm3MROSAFqMEAI/review', 
-    cta: '¿Te gusto? ¡Dejanos 5 estrellas!' 
+  const [data, setData] = useState({
+    name: 'Studio Veco',
+    link: 'https://g.page/r/Cbm3MROSAFqMEAI/review',
+    cta: '¿Te gusto? ¡Dejanos 5 estrellas!'
   })
   const [template, setTemplate] = useState('bold')
   const cardRef = useRef(null)
 
-  // Detecta tipo de link
   const linkStatus = useMemo(() => {
     const url = data.link || ''
     if (!url) return { type: 'empty' }
@@ -20,45 +19,27 @@ export default function App() {
       return { type: 'review', ok: true, label: 'Link de reseña perfecto ✓' }
     }
     if (url.includes('maps.app.goo.gl') || url.includes('goo.gl/maps') || url.includes('google.com/maps') || url.includes('maps/place')) {
-      return { 
-        type: 'location', 
-        ok: false, 
+      return {
+        type: 'location',
+        ok: false,
         label: 'Link de ubicación (no directo a reseña)',
-        help: 'Este link lleva al perfil, no al formulario. Funciona, pero el cliente necesita 1 click extra. Para el link directo, usa business.google.com > Pedir reseñas.'
+        help: 'Google Business → Pedir reseñas → Copiar link'
       }
     }
     return { type: 'unknown', ok: true, label: 'Link personalizado' }
   }, [data.link])
 
   const handleDownload = async () => {
-    const canvas = document.createElement('canvas')
-    const ctx = canvas.getContext('2d')
-    canvas.width = 1000
-    canvas.height = 1414
-    if(template==='minimal'){ ctx.fillStyle='#ffffff' } else if(template==='bold'){ ctx.fillStyle='#18181b' } else { ctx.fillStyle='#FFF8ED' }
-    ctx.fillRect(0,0,canvas.width,canvas.height)
-    if(template==='bold'){ ctx.strokeStyle='#facc15'; ctx.lineWidth=20; ctx.strokeRect(10,10,980,1394) }
-    
-    ctx.fillStyle = template==='minimal' ? '#18181b' : template==='bold' ? '#ffffff' : '#3d2b1f'
-    ctx.font='900 64px Inter'
-    ctx.textAlign='center'
-    const words = data.cta.split(' ')
-    let lines=[], cur=''
-    for(let w of words){ if((cur+' '+w).length>20){ lines.push(cur); cur=w } else cur+= (cur?' ':'')+w } lines.push(cur)
-    lines.forEach((l,i)=> ctx.fillText(l, 500, 250 + i*70))
-    
-    const qrUrl = getQrUrl(data.link)
-    const img = new Image(); img.crossOrigin='anonymous'
-    img.src = qrUrl
-    await new Promise(r=>{ img.onload=r; img.onerror=r })
-    ctx.fillStyle='#fff'; ctx.fillRect(150,500,700,700)
-    ctx.drawImage(img, 170,520,660,660)
-
-    ctx.font='700 24px Inter'
-    ctx.fillStyle = template==='minimal' ? '#71717a' : '#a1a1aa'
-    ctx.fillText('ESCANEA Y DEJA TU RESENA EN 10 SEGUNDOS', 500, 1320)
-
-    const a = document.createElement('a'); a.download=`${data.name}-resenasya.png`; a.href=canvas.toDataURL('image/png'); a.click()
+    if (!cardRef.current) return
+    const canvas = await html2canvas(cardRef.current, {
+      scale: 3,
+      backgroundColor: null,
+      useCORS: true
+    })
+    const a = document.createElement('a')
+    a.download = `${data.name}-resenasya.png`
+    a.href = canvas.toDataURL('image/png')
+    a.click()
   }
 
   const handleConvertHelp = () => {

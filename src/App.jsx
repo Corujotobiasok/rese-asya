@@ -88,12 +88,9 @@ export default function App() {
               <button onClick={()=>downloadImage(getQrUrl(data.link), 'qr.png')} className="bg-zinc-800 text-white rounded-full py-4 font-bold border border-zinc-700">Solo QR</button>
             </div>
 
-            <p className="mt-4 text-[11px] text-zinc-500 text-center">
-              Link actual: <span className="text-zinc-300 truncate inline-block max-w-[200px] align-bottom">{data.link || 'sin link'}</span> {linkStatus.type==='location' && '(funciona, pero con 1 click extra)'}
-            </p>
           </div>
 
-          <div className="mt-8 flex gap-6 text-xs text-zinc-500"><span>✓ Acepta maps.app.goo.gl</span><span>✓ Sin marca de agua en Pro</span><span>✓ Listo para imprenta</span></div>
+          <div className="mt-8 flex gap-6 text-xs text-zinc-500"><span>✓ Sin marca de agua en Pro</span><span>✓ Listo para imprenta</span></div>
         </div>
 
         <div className="lg:sticky lg:top-10">

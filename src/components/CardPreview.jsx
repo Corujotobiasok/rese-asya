@@ -1,36 +1,41 @@
 import { QRCodeSVG } from 'qrcode.react'
 
 export default function CardPreview({ data, template, cardRef }) {
-  const safeLink = data?.link || 'https://google.com'
-  const name = data?.name || 'TU COMERCIO'
-  const cta = data?.cta || '¿Te gustó? ¡Dejanos 5 estrellas!'
+  // =========================
+  // DATOS
+  // =========================
+  const safeLink = data?.link?.trim() || 'https://google.com'
+  const name = data?.name?.trim() || 'TU COMERCIO'
+  const cta =
+    data?.cta?.trim() || '¿Te gustó? ¡Dejanos 5 estrellas!'
+  const logo = data?.logo || null
 
+  // =========================
+  // PLANTILLAS
+  // =========================
   const templates = {
     minimal: {
       card: 'bg-white text-zinc-900 border border-zinc-200',
-      pill: 'bg-zinc-900 text-white',
-      stars: 'text-zinc-900',
       footer: 'text-zinc-400',
       qrContainer: 'bg-white border border-zinc-100',
       instruction: 'text-zinc-500',
+      logoFallback: 'text-zinc-900',
     },
 
     bold: {
       card: 'bg-zinc-950 text-white border border-yellow-400',
-      pill: 'bg-yellow-400 text-zinc-950',
-      stars: 'text-yellow-400',
       footer: 'text-zinc-500',
       qrContainer: 'bg-white',
       instruction: 'text-zinc-400',
+      logoFallback: 'text-white',
     },
 
     cafe: {
       card: 'bg-[#FFFBF2] text-[#3D2B1F] border border-[#F5E6CC]',
-      pill: 'bg-[#3D2B1F] text-[#FFFBF2]',
-      stars: 'text-[#FF8A00]',
       footer: 'text-[#A68B6A]',
       qrContainer: 'bg-white border border-[#F5E6CC]',
       instruction: 'text-[#8C765E]',
+      logoFallback: 'text-[#3D2B1F]',
     },
   }
 
@@ -38,6 +43,10 @@ export default function CardPreview({ data, template, cardRef }) {
 
   return (
     <div className="w-full flex justify-center p-4 sm:p-6">
+
+      {/* =========================
+          TARJETA
+      ========================== */}
       <div
         ref={cardRef}
         className={`
@@ -62,33 +71,66 @@ export default function CardPreview({ data, template, cardRef }) {
         ========================== */}
         <div className="text-center">
 
-          {/* COMERCIO */}
-          <div className="flex justify-center">
-            <div
-              className={`
-                inline-flex
-                items-center
-                justify-center
-                max-w-full
-                px-4
-                py-2
-                rounded-full
-                text-xs
-                font-black
-                tracking-[0.14em]
-                uppercase
-                truncate
-                ${t.pill}
-              `}
-            >
-              {name}
-            </div>
+          {/* =========================
+              LOGO / NOMBRE
+          ========================== */}
+          <div
+            className="
+              flex
+              justify-center
+              items-center
+              px-4
+              min-h-[60px]
+            "
+          >
+
+            {logo ? (
+
+              /* LOGO */
+              <img
+                src={logo}
+                alt={name}
+                className="
+                  max-w-[180px]
+                  max-h-[65px]
+                  w-auto
+                  h-auto
+                  object-contain
+                  select-none
+                "
+                draggable="false"
+              />
+
+            ) : (
+
+              /* NOMBRE SI NO HAY LOGO */
+              <div
+                className={`
+                  max-w-full
+                  text-center
+                  text-sm
+                  sm:text-base
+                  font-bold
+                  tracking-[0.08em]
+                  leading-tight
+                  break-words
+                  ${t.logoFallback}
+                `}
+              >
+                {name}
+              </div>
+
+            )}
+
           </div>
 
-          {/* CTA */}
+
+          {/* =========================
+              CTA
+          ========================== */}
           <h2
             className="
-              mt-1
+              mt-4
               text-3xl
               sm:text-4xl
               leading-[0.95]
@@ -100,16 +142,24 @@ export default function CardPreview({ data, template, cardRef }) {
             {cta}
           </h2>
 
-          
-
         </div>
 
 
         {/* =========================
-            QR CODE
+            QR + GOOGLE
         ========================== */}
-        <div className="w-full flex flex-col justify-center items-center my-4">
+        <div
+          className="
+            w-full
+            flex
+            flex-col
+            justify-center
+            items-center
+            my-5
+          "
+        >
 
+          {/* QR */}
           <div
             className={`
               flex
@@ -132,14 +182,26 @@ export default function CardPreview({ data, template, cardRef }) {
             />
 
           </div>
-          
-          {/* GOOGLE REVIEWS */}
-          <div className="flex justify-center mt-1 mb-[-20px]">
+
+
+          {/* =========================
+              GOOGLE REVIEWS
+          ========================== */}
+          <div
+            className="
+              flex
+              justify-center
+              items-center
+              mt-1
+              -mb-3
+            "
+          >
+
             <img
               src="/google.png"
               alt="Google Reviews - 5 estrellas"
               className="
-                w-[100px]
+                w-[105px]
                 sm:w-[140px]
                 h-auto
                 object-contain
@@ -147,6 +209,7 @@ export default function CardPreview({ data, template, cardRef }) {
               "
               draggable="false"
             />
+
           </div>
 
         </div>
@@ -171,6 +234,7 @@ export default function CardPreview({ data, template, cardRef }) {
             Escaneá y dejá tu reseña
           </p>
 
+
           {/* SEPARADOR */}
           <div
             className="
@@ -181,6 +245,7 @@ export default function CardPreview({ data, template, cardRef }) {
               my-4
             "
           />
+
 
           {/* BRAND */}
           <p

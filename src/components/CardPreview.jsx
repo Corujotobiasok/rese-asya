@@ -134,13 +134,13 @@ export default function CardPreview({ data, template, cardRef }) {
           </div>
           
           {/* GOOGLE REVIEWS */}
-          <div className="flex justify-center mt-5">
+          <div className="flex justify-center mt-1 mb-[-40px]">
             <img
               src="/google.png"
               alt="Google Reviews - 5 estrellas"
               className="
-                w-[170px]
-                sm:w-[190px]
+                w-[100px]
+                sm:w-[50px]
                 h-auto
                 object-contain
                 select-none

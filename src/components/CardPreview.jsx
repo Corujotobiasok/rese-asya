@@ -88,7 +88,7 @@ export default function CardPreview({ data, template, cardRef }) {
           {/* CTA */}
           <h2
             className="
-              mt-7
+              mt-4
               text-3xl
               sm:text-4xl
               leading-[0.95]
@@ -108,7 +108,7 @@ export default function CardPreview({ data, template, cardRef }) {
         {/* =========================
             QR CODE
         ========================== */}
-        <div className="w-full flex flex-col justify-center items-center my-6">
+        <div className="w-full flex flex-col justify-center items-center my-4">
 
           <div
             className={`

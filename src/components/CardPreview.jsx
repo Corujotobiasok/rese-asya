@@ -88,7 +88,7 @@ export default function CardPreview({ data, template, cardRef }) {
           {/* CTA */}
           <h2
             className="
-              mt-4
+              mt-1
               text-3xl
               sm:text-4xl
               leading-[0.95]

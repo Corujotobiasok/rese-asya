@@ -1,49 +1,148 @@
 import { QRCodeSVG } from 'qrcode.react'
 
 export default function CardPreview({ data, template, cardRef }) {
-  const styles = {
-    minimal: 'bg-white text-zinc-900',
-    bold: 'bg-zinc-900 text-white border- border-yellow-400',
-    cafe: 'bg-[#FFF8ED] text-[#3d2b1f] border border-orange-200'
-  }
-
   const safeLink = data.link || 'https://google.com'
   const name = data.name || 'TU COMERCIO'
   const cta = data.cta || '¿Te gustó? ¡Dejanos 5 estrellas!'
 
+  const templates = {
+    minimal: {
+      card: 'bg-white text-zinc-900 border border-zinc-200',
+      pill: 'bg-zinc-900 text-white',
+      stars: 'text-zinc-900',
+      footer: 'text-zinc-400',
+      qr: 'bg-white',
+    },
+
+    bold: {
+      card: 'bg-zinc-950 text-white border border-yellow-400',
+      pill: 'bg-yellow-400 text-zinc-950',
+      stars: 'text-yellow-400',
+      footer: 'text-zinc-500',
+      qr: 'bg-white',
+    },
+
+    cafe: {
+      card: 'bg-[#FFFBF2] text-[#3D2B1F] border border-[#F5E6CC]',
+      pill: 'bg-[#3D2B1F] text-[#FFFBF2]',
+      stars: 'text-[#FF8A00]',
+      footer: 'text-[#A68B6A]',
+      qr: 'bg-white',
+    },
+  }
+
+  const t = templates[template] || templates.minimal
+
   return (
-    <div className="w-full flex justify-center">
+    <div className="w-full flex justify-center p-6">
       <div
         ref={cardRef}
-        className={`w- aspect-[1/1.414] rounded- p-8 flex flex-col justify-between shadow-2xl ${styles[template]}`}
+        className={`
+          relative
+          w-full
+          max-w-[420px]
+          aspect-[1/1.414]
+          rounded-2xl
+          p-8
+          flex
+          flex-col
+          justify-between
+          overflow-hidden
+          shadow-[0_20px_80px_-20px_rgba(0,0,0,0.3)]
+          ${t.card}
+        `}
       >
+        {/* HEADER */}
         <div className="text-center">
-          <div className="w-full flex justify-center">
-            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-zinc-100 text-zinc-900 text- font-bold tracking-widest uppercase">
+
+          <div className="flex justify-center">
+            <div
+              className={`
+                inline-flex
+                items-center
+                px-4
+                py-2
+                rounded-full
+                text-xs
+                font-black
+                tracking-[0.15em]
+                uppercase
+                ${t.pill}
+              `}
+            >
               {name}
             </div>
           </div>
-          <h2 className="mt-6 text-[46px] leading-[0.95] font-black tracking-tight break-words">
+
+          <h2
+            className="
+              mt-8
+              text-3xl
+              sm:text-4xl
+              leading-[0.95]
+              font-black
+              tracking-tight
+            "
+          >
             {cta}
           </h2>
-          <div className="flex justify-center gap-1 mt-3 text-yellow-400 text-xl">★★★★★</div>
+
+          <div
+            className={`
+              flex
+              justify-center
+              gap-1.5
+              mt-5
+              text-2xl
+              ${t.stars}
+            `}
+          >
+            <span>★</span>
+            <span>★</span>
+            <span>★</span>
+            <span>★</span>
+            <span>★</span>
+          </div>
         </div>
 
-        <div className="w-full flex justify-center">
-          <div className="bg-white rounded-xl p-2 shadow-inner flex justify-center items-center w-fit h-fit">
+        {/* QR */}
+        <div className="w-full flex justify-center my-8">
+          <div
+            className={`
+              rounded-2xl
+              p-4
+              shadow-sm
+              ${t.qr}
+            `}
+          >
             <QRCodeSVG
               value={safeLink}
-              size={300}
+              size={190}
               level="H"
             />
           </div>
         </div>
 
-        <div className="text-center space-y-2">
-          <p className="text- font-bold tracking-widest uppercase opacity-60">
-            ESCANEÁ Y DEJÁ TU RESEÑA EN 10 SEGUNDOS
+        {/* FOOTER */}
+        <div className="text-center">
+
+          <p className="text-xs font-bold tracking-[0.15em] uppercase opacity-60">
+            Escaneá y dejá tu reseña
           </p>
-          <p className="text-[12px] opacity-40">Desarrollado por Studioveco.netlify.app</p>
+
+          <div className="h-px w-full bg-current opacity-10 my-4" />
+
+          <p
+            className={`
+              text-xs
+              font-medium
+              tracking-wide
+              ${t.footer}
+            `}
+          >
+            studioveco.netlify.app
+          </p>
+
         </div>
       </div>
     </div>
